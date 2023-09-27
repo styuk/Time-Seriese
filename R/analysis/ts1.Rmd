@@ -1,0 +1,43 @@
+---
+title: "TS1"
+author: "styuk"
+date: "2023-09-27"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 状態空間モデルの時系列分析
+
+-   このノートは個人的な学習のために作成されたノートです。
+
+-   このノートではHagiwara, J.:Time Series Analysis for the State-Space Model with R/Stanで紹介されている分析を個人的に関心のあるデータに適用しながら、追っています。
+
+```{r cars}
+summary(cars)
+```
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
