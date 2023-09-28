@@ -15,22 +15,358 @@ knitr::opts_chunk$set(echo = TRUE)
 
 -   このノートは個人的な学習のために作成されたノートです。
 
--   このノートではHagiwara, J.:Time Series Analysis for the State-Space Model with R/Stanで紹介されている分析を個人的に関心のあるデータに適用しながら、追っています。
+-   このノートではHagiwara, J先生のTime Series Analysis for the State-Space Model with R/Stanで紹介されている分析を個人的に関心のあるデータに適用しながら、追っています。
 
-```{r cars}
-summary(cars)
+
+
+以下ではKaggleにおいて公開されていたデータセットを取得し使用しています。
+
+- Time Series Forecasting with Yahoo Stock Price 
+(https://www.kaggle.com/datasets/arashnic/time-series-forecasting-with-yahoo-stock-price)
+
+- Numenta Anomaly Benchmark (NAB)
+(https://www.kaggle.com/datasets/boltzmannbrain/nab)
+ 詳細
+ (Lavin, Alexander and Ahmad, Subutai. "Evaluating Real-time Anomaly Detection Algorithms – the Numenta Anomaly Benchmark", Fourteenth International
+Conference on Machine Learning and Applications, December 2015.)
+
+```{r}
+stock<- read.csv("stock.csv")
+stock
+```
+
+
+```{r}
+ocu1 <- read.csv("occupancy_6005.csv")
+ocu2 <- read.csv("occupancy_t4013.csv")
 ```
 
 ```{r}
+ocu1
+```
+
+```{r}
+amazon <- read.csv("Twitter_volume_AMZN.csv")
+amazon
+```
+```{r}
+apple<-read.csv("Twitter_volume_AAPL.csv")
+apple
+```
+
+```{r}
+google <- read.csv("Twitter_volume_GOOG.csv")
+google
+```
+```{r}
+amazon$timestamp <- as.POSIXct(amazon$timestamp, format="%Y-%m-%d %H:%M:%S")
+install.packages("xts")
+library(xts)
+
+# amazonにvalueという値を時系列分析したいとします
+amazon_xts <- xts(amazon$value, order.by=amazon$timestamp)
+plot(amazon_xts)
+
 ```
 
 
 ```{r}
+apple$timestamp <- as.POSIXct(apple$timestamp, format="%Y-%m-%d %H:%M:%S")
+
+#appleにvalueという値を時系列分析したいとします
+apple_xts <- xts(apple$value, order.by=apple$timestamp)
+plot(apple_xts)
+```
+
+
+
+
+```{r}
+stock
 ```
 
 
 ```{r}
+stock$Date <- as.Date(stock$Date, format="%Y-%m-%d")
+
+start_date <- min(stock$Date)
+end_date <- max(stock$Date)
+
 ```
+
+```{r}
+stock_ts <- ts(stock$Open, start=c(as.numeric(format(start_date, "%Y")), as.numeric(format(start_date, "%j"))), frequency=365)
+```
+
+```{r}
+plot(stock_ts)
+```
+
+
+
+```{r}
+Nile
+```
+
+```{r}
+plot(Nile)
+```
+
+```{r}
+# Load the data
+Ryori <- read.csv("CO2.csv")
+
+# Cast the data to ts class, truncating it by December 2014
+y_all <- ts(data = Ryori$CO2, start = c(1987, 1), frequency = 12)
+y <- window(y_all, end = c(2014, 12))
+
+# Display data contents
+y
+```
+
+
+```{r}
+Nile2 <- ts(Nile, start=1866)
+ts.union(Nile, Nile2)
+```
+
+```{r}
+ Nile2 <- 2 * Nile
+ ts.plot(cbind(Nile, Nile2), ylab = "y",lty = c("solid", "dashed"))
+```
+
+```{r}
+tsp(Nile)
+time(Nile)
+```
+
+```{r}
+day <- as.Date("2000-01-01")
+str(day)
+
+days <- seq(from = as.Date("2000-01-01"), to = as.Date("2000-01-31"), by="day")
+
+days
+weekdays(days)
+```
+
+```{r}
+oldpar <- par(no.readonly=TRUE)
+par(mfrow=c(2,2), oma=c(0,0,0,0), mar=c(5, 3.5, 2, 1), mgp=c(2.5, 1, 0))
+
+
+plot(Nile)
+title(sub="(a)", line=4, family = "mono")
+
+y_CO2 <- y
+plot(y_CO2)
+title(sub = "(b)", line=4, family="mono")
+
+plot(UKgas)
+title(sub="(c)", line=4, family="mono")
+
+load("BenchmarkNonLinearModel.RData")
+y_nonlinear<-ts(y)
+plot(y_nonlinear)
+title(sub="(d)", line=4, family="mono")
+
+par(oldpar)
+```
+
+
+```{r}
+oldpar <- par(no.readonly=TRUE)
+par(mfrow=c(2,2), oma=c(0,0,0,0), mar=c(5, 3.5, 2, 1), mgp=c(2.5, 1, 0))
+
+hist(Nile, main="", xlab="データ値")
+title(sub="(a)", line=4, family="mono")
+summary(Nile)
+
+hist(y_CO2, main="", xlab="データ値")
+title(sub="(b)", line=4, family="mono")
+summary(y_CO2)
+
+UKgas_log <- log(UKgas)
+hist(UKgas_log, main="", xlab="データ値")
+title(sub="(c)", line=4, family="mono")
+summary(UKgas_log)
+
+hist(y_nonlinear, main="", xlab="データ値")
+title(sub="(d)", line=4, family="mono")
+summary(y_nonlinear)
+
+par(oldpar)
+
+```
+
+
+```{r}
+NA.point<-which(is.na(y_CO2))
+
+y_CO2[NA.point]<-(y_CO2[NA.point-1]+y_CO2[NA.point+1])/2
+```
+
+```{r}
+oldpar<-par(no.readonly=TRUE)
+par(mfrow=c(2,2), oma=c(0,0,0,0), mar=c(5, 3.5, 2, 1), mgp=c(2.5,1,0))
+
+acf(Nile, main="")
+title(sub="(a)", line=4, family="mono")
+
+acf(y_CO2, main="")
+title(sub="(b)", line=4, family="mono")
+
+acf(UKgas_log, main="")
+title(sub="(c)", line=4, family="mono")
+
+acf(y_nonlinear, main="")
+title(sub="(d)", line=4, family="mono")
+
+par(oldpar)
+```
+
+```{r}
+acf(stock_ts, main="")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Including Plots
 
