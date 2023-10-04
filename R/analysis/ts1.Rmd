@@ -15,11 +15,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 -   このノートは個人的な学習のために作成されたノートです。
 
--   このノートではHagiwara, J先生のTime Series Analysis for the State-Space Model with R/Stanで紹介されている分析を個人的に関心のあるデータに適用しながら、追っています。
+-   このノートではHagiwara Junichiro先生のTime Series Analysis for the State-Space Model with R/Stanで紹介されている分析を個人的に関心のあるデータに適用しながら、追っています。
 
 
 
-以下ではKaggleにおいて公開されていたデータセットを取得し使用しています。
+以下で公開されていたデータセットを取得し使用しています。
 
 - Time Series Forecasting with Yahoo Stock Price 
 (https://www.kaggle.com/datasets/arashnic/time-series-forecasting-with-yahoo-stock-price)
@@ -29,6 +29,8 @@ knitr::opts_chunk$set(echo = TRUE)
  詳細
  (Lavin, Alexander and Ahmad, Subutai. "Evaluating Real-time Anomaly Detection Algorithms – the Numenta Anomaly Benchmark", Fourteenth International
 Conference on Machine Learning and Applications, December 2015.)
+
+初めはデータの可視化を行って行きます。
 
 ```{r}
 stock<- read.csv("stock.csv")
@@ -63,7 +65,6 @@ amazon$timestamp <- as.POSIXct(amazon$timestamp, format="%Y-%m-%d %H:%M:%S")
 install.packages("xts")
 library(xts)
 
-# amazonにvalueという値を時系列分析したいとします
 amazon_xts <- xts(amazon$value, order.by=amazon$timestamp)
 plot(amazon_xts)
 
@@ -73,7 +74,6 @@ plot(amazon_xts)
 ```{r}
 apple$timestamp <- as.POSIXct(apple$timestamp, format="%Y-%m-%d %H:%M:%S")
 
-#appleにvalueという値を時系列分析したいとします
 apple_xts <- xts(apple$value, order.by=apple$timestamp)
 plot(apple_xts)
 ```
