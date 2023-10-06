@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 -   このノートは個人的な学習のために作成されたノートです。
 
--   このノートではHagiwara Junichiro先生のTime Series Analysis for the State-Space Model with R/Stanで紹介されている分析を個人的に関心のあるデータに適用しながら、追っています。
+-   このノートではHagiwara Junichiro先生のTime Series Analysis for the State-Space Model with R/Stanで紹介されている分析を個人的に関心のあるデータに適用しながら追っています。
 
 
 ```{r}
@@ -306,6 +306,7 @@ legend(legend=c("observations", "Winner smoothing", "Kalman smoothing"),
 
 
 ```{r}
+
 
 ```
 
