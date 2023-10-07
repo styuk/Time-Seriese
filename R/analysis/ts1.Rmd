@@ -307,8 +307,18 @@ legend(legend=c("observations", "Winner smoothing", "Kalman smoothing"),
 
 ```{r}
 
+y <- Nile 
+t_max <- length(y)
 
+kalman_filtering <- function(m_t_minus1, C_t_minus_1, t) {
+  
+  a_t <- G_t %*% m_t_minus_1
+  R_t <- G_t %*% C_t_minus_1 %*% t(G_t) + W_t
+  
+  f_t <- F_t %*% R
+}
 ```
+
 
 
 
