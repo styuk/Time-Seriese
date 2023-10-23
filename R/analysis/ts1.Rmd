@@ -3,8 +3,13 @@ title: "TS1"
 author: "styuk"
 date: "2023-09-27"
 output:
-  html_document: default
-  pdf_document: default
+  pdf_document:
+    latex_engine: xelatex
+    toc: false
+header-includes:
+ - \usepackage{zxjatype}
+ - \usepackage[ipa]{zxjafont}
+documentclass: bxjsarticle
 ---
 
 ```{r setup, include=FALSE}
@@ -139,9 +144,6 @@ title(sub="(d)", line=4, family="mono")
 par(oldpar)
 ```
 
-```{r}
-acf(stock_ts, main="")
-```
 
 
 ```{r}
@@ -306,18 +308,31 @@ legend(legend=c("observations", "Winner smoothing", "Kalman smoothing"),
 
 
 ```{r}
+#カルマンフィルタリング(ゼロから)
 
+#ナイル川の流入データを観測データとして設定
 y <- Nile 
 t_max <- length(y)
 
+#1つの時間点でカルマンフィルタリングを実行する関数の定義
 kalman_filtering <- function(m_t_minus1, C_t_minus_1, t) {
-  
+  #一時点先の予測分布
   a_t <- G_t %*% m_t_minus_1
   R_t <- G_t %*% C_t_minus_1 %*% t(G_t) + W_t
   
+  #一時点先の予測尤度
   f_t <- F_t %*% R
+  Q_t <- F_t %*% R_t %*% t(G_t)+W_t
 }
+
+
 ```
+
+
+```{r}
+
+```
+
 
 
 
